@@ -191,63 +191,69 @@
     // 3. INSTALAR APP
     // ============================================
     function instalarApp() {
-        const input = document.getElementById('inputCodigo');
-        const codigo = input.value.trim().toUpperCase();
-        const mensaje = document.getElementById('mensajeContainer');
-        const btn = document.getElementById('btnInstalar');
+    const input = document.getElementById('inputCodigo');
+    const codigo = input.value.trim().toUpperCase();
+    const mensaje = document.getElementById('mensajeContainer');
+    const btn = document.getElementById('btnInstalar');
 
-        if (!codigo) {
-            mostrarMensaje('❌ Ingresa el código de instalación', 'error');
-            input.focus();
-            return;
-        }
-
-        const match = codigo.match(/^INST-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
-        if (!match) {
-            mostrarMensaje('❌ Formato inválido. Usá: INST-XXXX-XXXX', 'error');
-            input.focus();
-            return;
-        }
-
-        if (!CODIGOS_VALIDOS.includes(codigo)) {
-            mostrarMensaje('❌ Código incorrecto', 'error');
-            input.focus();
-            return;
-        }
-
-        const codigosUsados = JSON.parse(localStorage.getItem('codigos_usados') || '[]');
-        if (codigosUsados.includes(codigo)) {
-            mostrarMensaje('❌ Este código ya fue utilizado', 'error');
-            return;
-        }
-
-        // ✅ Marcar como usado
-        codigosUsados.push(codigo);
-        localStorage.setItem('codigos_usados', JSON.stringify(codigosUsados));
-
-        // ✅ Iniciar instalación
-        btn.innerHTML = '<span class="loading"></span> Instalando...';
-        btn.disabled = true;
-
-        mostrarMensaje('📥 Instalando la app...', 'info');
-
-        try {
-            // 🔥 INSTALACIÓN DIRECTA DESDE GITHUB
-            window.location.href = APK_URL;
-
-            setTimeout(() => {
-                document.getElementById('pantallaInstalacion').classList.add('oculto');
-                document.getElementById('pantallaError').classList.add('oculto');
-                document.getElementById('pantallaExito').classList.remove('oculto');
-                document.getElementById('codigoUsado').textContent = codigo;
-            }, 2000);
-
-        } catch (error) {
-            btn.innerHTML = '📥 Instalar app';
-            btn.disabled = false;
-            mostrarMensaje('❌ Error al iniciar la instalación', 'error');
-        }
+    if (!codigo) {
+        mostrarMensaje('❌ Ingresa el código de instalación', 'error');
+        input.focus();
+        return;
     }
+
+    const match = codigo.match(/^INST-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
+    if (!match) {
+        mostrarMensaje('❌ Formato inválido. Usá: INST-XXXX-XXXX', 'error');
+        input.focus();
+        return;
+    }
+
+    if (!CODIGOS_VALIDOS.includes(codigo)) {
+        mostrarMensaje('❌ Código incorrecto', 'error');
+        input.focus();
+        return;
+    }
+
+    const codigosUsados = JSON.parse(localStorage.getItem('codigos_usados') || '[]');
+    if (codigosUsados.includes(codigo)) {
+        mostrarMensaje('❌ Este código ya fue utilizado', 'error');
+        return;
+    }
+
+    codigosUsados.push(codigo);
+    localStorage.setItem('codigos_usados', JSON.stringify(codigosUsados));
+
+    btn.innerHTML = '<span class="loading"></span> Instalando...';
+    btn.disabled = true;
+
+    mostrarMensaje('📥 Instalando la app...', 'info');
+
+    // 🔥 INSTALACIÓN DIRECTA SIN DESCARGAR
+    const APK_URL = 'https://github.com/desarrolloweb-rgsoria/Servidor-apk/releases/download/v1.0.0/inventario_v1_0_0.apk';
+
+    try {
+        if (navigator.userAgent.includes('Android')) {
+            // 🔥 MÉTODO 1: intent:// (instalación directa)
+            window.location.href = `intent://${APK_URL.replace('https://', '')}#Intent;action=android.intent.action.VIEW;scheme=https;package=com.android.packageinstaller;end`;
+        } else {
+            // Si no es Android, usar el enlace normal
+            window.location.href = APK_URL;
+        }
+
+        setTimeout(() => {
+            document.getElementById('pantallaInstalacion').classList.add('oculto');
+            document.getElementById('pantallaError').classList.add('oculto');
+            document.getElementById('pantallaExito').classList.remove('oculto');
+            document.getElementById('codigoUsado').textContent = codigo;
+        }, 2000);
+
+    } catch (error) {
+        btn.innerHTML = '📥 Instalar app';
+        btn.disabled = false;
+        mostrarMensaje('❌ Error al iniciar la instalación', 'error');
+    }
+}
 
     // ============================================
     // 4. MOSTRAR MENSAJE
