@@ -1,298 +1,574 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Instalador</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Instalador APK · Código Único</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ===== RESET Y ESTILOS BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            background: #0f172a;
-            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0e1a;
+            /* Fondo oscuro como tu diseño actual */
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            margin: 0;
         }
+
         .container {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 24px;
-            padding: 30px 25px;
-            max-width: 400px;
             width: 100%;
-            border: 1px solid rgba(255,255,255,0.06);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            max-width: 440px;
+        }
+
+        /* ===== TARJETA PRINCIPAL ===== */
+        .card {
+            background: #1a1a2e;
+            /* Fondo oscuro elegante */
+            border-radius: 32px;
+            padding: 40px 28px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s ease;
+            color: #e8e8e8;
+        }
+
+        .icono-grande {
             text-align: center;
+            font-size: 56px;
+            margin-bottom: 6px;
+            display: block;
         }
-        .icono-grande { font-size: 4rem; display: block; margin-bottom: 16px; }
-        h1 { font-size: 1.6rem; margin-bottom: 8px; }
-        .subtitulo { opacity: 0.6; font-size: 0.95rem; margin-bottom: 24px; line-height: 1.6; }
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
+
+        h1 {
+            color: #ffffff;
+            font-size: 26px;
+            text-align: center;
             font-weight: 700;
-            font-size: 1.05rem;
-            cursor: pointer;
-            transition: all 0.2s;
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
         }
-        .btn:active { transform: scale(0.97); }
-        .btn-primary { background: #3b82f6; color: white; }
-        .btn-danger { background: #dc2626; color: white; }
-        .btn-success { background: #059669; color: white; }
-        .mensaje {
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            display: none;
+
+        .subtitulo {
+            color: #a0a0b8;
+            text-align: center;
+            font-size: 15px;
+            margin-bottom: 28px;
+            font-weight: 400;
         }
-        .mensaje.exito { background: #d1fae5; color: #065f46; display: block; }
-        .mensaje.error { background: #fee2e2; color: #991b1b; display: block; }
-        .mensaje.info { background: #dbeafe; color: #1e40af; display: block; }
-        .oculto { display: none !important; }
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 0.8s linear infinite;
-            vertical-align: middle;
-            margin-right: 8px;
+
+        /* ===== INPUT Y BOTÓN ===== */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .codigo-box {
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
-            padding: 12px;
-            font-family: monospace;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            color: #60a5fa;
-            margin: 12px 0;
-            word-break: break-all;
-        }
-        .info-box {
-            background: rgba(251, 191, 36, 0.1);
-            border-radius: 12px;
-            padding: 12px 16px;
-            margin: 16px 0;
-            border: 1px solid rgba(251, 191, 36, 0.2);
-            font-size: 0.8rem;
-            color: #fbbf24;
-            text-align: left;
-        }
-        .info-box strong { color: #fff; }
+
         input {
-            width: 100%;
+            flex: 1;
             padding: 14px 16px;
-            border-radius: 12px;
-            border: 2px solid rgba(255,255,255,0.08);
-            background: rgba(0,0,0,0.3);
-            color: white;
-            font-size: 1rem;
-            font-family: monospace;
-            letter-spacing: 2px;
+            border: 2px solid #2a2a44;
+            border-radius: 14px;
+            font-size: 16px;
+            transition: all 0.3s;
             text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            background: #12121f;
+            color: #ffffff;
             outline: none;
         }
-        input:focus { border-color: #3b82f6; }
+
+        input::placeholder {
+            color: #555570;
+            letter-spacing: 0.5px;
+            font-weight: 400;
+        }
+
+        input:focus {
+            border-color: #6c63ff;
+            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.15);
+            background: #16162b;
+        }
+
+        input:disabled {
+            opacity: 0.4;
+            background: #1a1a2e;
+            cursor: not-allowed;
+        }
+
+        button {
+            padding: 14px 22px;
+            background: #6c63ff;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            min-width: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        button:hover:not(:disabled) {
+            background: #7b73ff;
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(108, 99, 255, 0.3);
+        }
+
+        button:active:not(:disabled) {
+            transform: scale(0.96);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ===== MENSAJES ===== */
+        #mensaje {
+            min-height: 46px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 18px;
+            display: none;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        #mensaje.exito {
+            display: block;
+            background: rgba(46, 213, 115, 0.15);
+            color: #7ddfa0;
+            border: 1px solid rgba(46, 213, 115, 0.2);
+        }
+
+        #mensaje.error {
+            display: block;
+            background: rgba(255, 71, 87, 0.12);
+            color: #ff6b7a;
+            border: 1px solid rgba(255, 71, 87, 0.2);
+        }
+
+        #mensaje.info {
+            display: block;
+            background: rgba(108, 99, 255, 0.1);
+            color: #a8a2ff;
+            border: 1px solid rgba(108, 99, 255, 0.15);
+        }
+
+        /* ===== INFORMACIÓN ADICIONAL ===== */
+        .info-adicional {
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .info-adicional details {
+            color: #8888aa;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .info-adicional details summary {
+            font-weight: 600;
+            color: #b0b0cc;
+            padding: 4px 0;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-adicional details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .info-adicional details ul {
+            margin-top: 10px;
+            padding-left: 22px;
+            line-height: 2;
+            list-style: none;
+        }
+
+        .info-adicional details ul li::before {
+            content: "• ";
+            color: #6c63ff;
+            font-weight: bold;
+        }
+
+        .info-adicional details ul li strong {
+            color: #c8c8e8;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.25);
+            margin-top: 20px;
+            font-size: 11px;
+            letter-spacing: 0.8px;
+        }
+
+        footer span {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .card {
+                padding: 28px 16px;
+            }
+            .input-group {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+                justify-content: center;
+                min-width: unset;
+                padding: 15px;
+            }
+            h1 {
+                font-size: 22px;
+            }
+            .icono-grande {
+                font-size: 44px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .card {
+                padding: 20px 12px;
+            }
+            input {
+                font-size: 14px;
+                padding: 12px 12px;
+            }
+            button {
+                font-size: 15px;
+                padding: 13px;
+            }
+        }
+
+        /* ===== SPINNER DE CARGA ===== */
+        .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: girar 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        @keyframes girar {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== ANIMACIÓN DE ENTRADA ===== */
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .card {
+            animation: aparecer 0.5s ease-out;
+        }
     </style>
 </head>
 <body>
 
-<div class="container" id="appContainer">
+    <div class="container">
+        <div class="card">
 
-    <!-- ===== PANTALLA DE INSTALACIÓN ===== -->
-    <div id="pantallaInstalacion">
-        <span class="icono-grande">📦</span>
-        <h1>Instalador</h1>
-        <p class="subtitulo">
-            Ingresa el código de instalación que recibiste.
-            <br><span style="font-size:0.8rem;opacity:0.6;">Código de un solo uso.</span>
-        </p>
+            <!-- ÍCONO PRINCIPAL (cambia según estado) -->
+            <span class="icono-grande" id="iconoPrincipal">📦</span>
 
-        <div style="text-align:left;margin-bottom:16px;">
-            <label style="display:block;font-size:0.8rem;font-weight:600;opacity:0.7;margin-bottom:4px;">🔑 Código de instalación</label>
-            <input type="text" id="inputCodigo" placeholder="INST-XXXX-XXXX">
+            <!-- TÍTULO Y SUBTÍTULO -->
+            <h1 id="tituloPrincipal">Instalador</h1>
+            <p class="subtitulo" id="subtituloPrincipal">Ingresa el código de instalación que recibiste.<br />Código de un solo uso.</p>
+
+            <!-- INPUT + BOTÓN -->
+            <div class="input-group">
+                <input type="text" id="codigoInput" placeholder="Ej: A3F5D-2E1K-9M7N" maxlength="20" autofocus />
+                <button id="botonInstalar">🔓 Instalar</button>
+            </div>
+
+            <!-- ÁREA DE MENSAJES -->
+            <div id="mensaje"></div>
+
+            <!-- INFORMACIÓN ADICIONAL (colapsable) -->
+            <div class="info-adicional">
+                <details>
+                    <summary>📋 Información</summary>
+                    <ul>
+                        <li><strong>Código válido</strong> para un solo uso</li>
+                        <li>La app se instalará directamente desde el navegador</li>
+                        <li>No se guardará el archivo APK en tu dispositivo</li>
+                    </ul>
+                </details>
+            </div>
+
         </div>
 
-        <button class="btn btn-primary" onclick="instalarApp()" id="btnInstalar">
-            📥 Instalar app
-        </button>
-
-        <div id="mensajeContainer" class="mensaje"></div>
-
-        <div class="info-box" style="margin-top:16px;">
-            <strong>📋 Información:</strong><br>
-            • Código válido para un solo uso<br>
-            • La app se instalará directamente<br>
-            • No se guardará el archivo APK
-        </div>
+        <footer>
+            <span>🔐 Código de un solo uso · v2.0</span>
+        </footer>
     </div>
 
-    <!-- ===== PANTALLA DE ERROR ===== -->
-    <div id="pantallaError" class="oculto">
-        <span class="icono-grande">🔒</span>
-        <h1 style="color:#dc2626;">No autorizado</h1>
-        <p class="subtitulo" style="opacity:0.6;">
-            El código no es válido o ya fue utilizado.
-        </p>
-        <button class="btn btn-danger" onclick="location.reload()">🔄 Reintentar</button>
-    </div>
+    <script>
+        // ============================================================
+        //  CONFIGURACIÓN - ¡AJUSTA ESTO!
+        // ============================================================
+        const CONFIG = {
+            // --- LISTA DE CÓDIGOS VÁLIDOS ---
+            // Formato: { code: 'CÓDIGO', apk: 'nombre-del-archivo.apk' }
+            // ¡IMPORTANTE! Cambia 'tu-app.apk' por el nombre real de tu APK
+            CODIGOS_VALIDOS: [
+                { code: 'A3F5D-2E1K-9M7N', apk: 'inventario_v1_0_0.apk' },
+                { code: 'B8G7H-4P3L-6R2Q', apk: 'tu-app.apk' },
+                { code: 'C9J8K-7S5D-1T4F', apk: 'tu-app.apk' }
+            ],
 
-    <!-- ===== PANTALLA DE INSTALACIÓN EXITOSA ===== -->
-    <div id="pantallaExito" class="oculto">
-        <span class="icono-grande">✅</span>
-        <h1 style="color:#059669;">¡Instalación iniciada!</h1>
-        <p class="subtitulo" style="opacity:0.6;">
-            La app se está instalando en tu dispositivo.
-        </p>
-        <div style="margin:20px 0;padding:16px;background:rgba(0,0,0,0.2);border-radius:12px;">
-            <div style="font-size:0.7rem;opacity:0.5;">Código utilizado</div>
-            <div class="codigo-box" id="codigoUsado">---</div>
-        </div>
-        <button class="btn btn-success" onclick="cerrar()">✅ Cerrar</button>
-    </div>
+            // --- URL DE TU APK (GITHUB RAW) ---
+            // Si tu APK está en la raíz del repo, usa esta URL base
+            // y el script añadirá el nombre del archivo automáticamente
+            URL_BASE_APK: 'https://raw.githubusercontent.com/desarrolloweb-rgsoria/Servidor-apk/main/',
 
-</div>
+            // --- CLAVE PARA localStorage (códigos usados) ---
+            CLAVE_STORAGE: 'codigos_usados_apk'
+        };
 
-<script>
-    // ============================================
-    // 🔐 SISTEMA DE INSTALACIÓN
-    // ============================================
+        // ============================================================
+        //  LÓGICA DEL SISTEMA
+        // ============================================================
 
-    // ============================================
-    // 1. 🔴 REEMPLAZA ESTA URL CON LA DE TU APK
-    //    El APK debe estar en la raíz de tu repositorio
-    // ============================================
-    const APK_URL = 'https://desarrolloweb-rgsoria.github.io/Servidor-apk/inventario_v1_0_0.apk';
+        // Obtener códigos ya usados
+        function obtenerUsados() {
+            try {
+                const data = localStorage.getItem(CONFIG.CLAVE_STORAGE);
+                return data ? JSON.parse(data) : [];
+            } catch {
+                return [];
+            }
+        }
 
-    // ============================================
-    // 2. CÓDIGOS VÁLIDOS (SOLO PARA PRUEBAS)
-    // ============================================
-    const CODIGOS_VALIDOS = [
-        'INST-X1P5-F8D3',
-        'INST-L9N1-T4R7',
-        'INST-W6Q2-Z8V4',
-        'INST-M3K9-P2R8',
-        'INST-N7S5-J1T6',
-        'INST-G4U9-V2E7',
-        'INST-C5R8-D3W1'
-        'INST-N6W6-CL0E'
-    ];
-
-    // ============================================
-    // 3. INSTALAR APP (INSTALACIÓN DIRECTA)
-    // ============================================
-    function instalarApp() {
-        const input = document.getElementById('inputCodigo');
-        const codigo = input.value.trim().toUpperCase();
-        const mensaje = document.getElementById('mensajeContainer');
-        const btn = document.getElementById('btnInstalar');
+        // Guardar código como usado
+        function marcarUsado(code) {
+            const usados = obtenerUsados();
+            if (!usados.includes(code)) {
+                usados.push(code);
+                localStorage.setItem(CONFIG.CLAVE_STORAGE, JSON.stringify(usados));
+            }
+        }
 
         // Validar código
-        if (!codigo) {
-            mostrarMensaje('❌ Ingresa el código de instalación', 'error');
-            input.focus();
-            return;
+        function validarCodigo(input) {
+            const limpio = input.toUpperCase().trim().replace(/\s/g, '');
+
+            // ¿Ya fue usado?
+            if (obtenerUsados().includes(limpio)) {
+                return { valido: false, mensaje: '❌ El código ya fue utilizado' };
+            }
+
+            // Buscar en la lista
+            const encontrado = CONFIG.CODIGOS_VALIDOS.find(c => c.code === limpio);
+            if (!encontrado) {
+                return { valido: false, mensaje: '❌ Código no válido' };
+            }
+
+            return { valido: true, apk: encontrado.apk };
         }
 
-        const match = codigo.match(/^INST-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
-        if (!match) {
-            mostrarMensaje('❌ Formato inválido. Usá: INST-XXXX-XXXX', 'error');
-            input.focus();
-            return;
+        // Iniciar descarga del APK
+        function descargarAPK(nombreArchivo) {
+            const url = CONFIG.URL_BASE_APK + nombreArchivo;
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = nombreArchivo;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            setTimeout(() => document.body.removeChild(link), 1500);
         }
 
-        if (!CODIGOS_VALIDOS.includes(codigo)) {
-            mostrarMensaje('❌ Código incorrecto', 'error');
-            input.focus();
-            return;
+        // Mostrar mensaje en la interfaz
+        function mostrarMensaje(texto, tipo = 'info') {
+            const el = document.getElementById('mensaje');
+            el.textContent = texto;
+            el.className = 'mensaje ' + tipo;
+            clearTimeout(window.timerMensaje);
+            if (tipo !== 'error') {
+                window.timerMensaje = setTimeout(() => {
+                    el.className = 'mensaje';
+                }, 6000);
+            }
         }
 
-        const codigosUsados = JSON.parse(localStorage.getItem('codigos_usados') || '[]');
-        if (codigosUsados.includes(codigo)) {
-            mostrarMensaje('❌ Este código ya fue utilizado', 'error');
-            return;
+        // Cambiar UI según estado (ícono, título, subtítulo)
+        function cambiarUI(estado) {
+            const icono = document.getElementById('iconoPrincipal');
+            const titulo = document.getElementById('tituloPrincipal');
+            const subtitulo = document.getElementById('subtituloPrincipal');
+
+            switch (estado) {
+                case 'inicio':
+                    icono.textContent = '📦';
+                    titulo.textContent = 'Instalador';
+                    subtitulo.textContent = 'Ingresa el código de instalación que recibiste. Código de un solo uso.';
+                    break;
+                case 'exito':
+                    icono.textContent = '✅';
+                    titulo.textContent = '¡Instalación iniciada!';
+                    subtitulo.textContent = 'La app se está instalando en tu dispositivo.';
+                    break;
+                case 'error':
+                    icono.textContent = '🔒';
+                    titulo.textContent = 'No autorizado';
+                    subtitulo.textContent = 'El código no es válido o ya fue utilizado.';
+                    break;
+                default:
+                    break;
+            }
         }
 
-        // ✅ Marcar como usado
-        codigosUsados.push(codigo);
-        localStorage.setItem('codigos_usados', JSON.stringify(codigosUsados));
-
-        // ✅ Iniciar instalación
-        btn.innerHTML = '<span class="loading"></span> Instalando...';
-        btn.disabled = true;
-
-        mostrarMensaje('📥 Instalando la app...', 'info');
-
-        try {
-            // 🔥 INSTALACIÓN DIRECTA (sin descarga visible)
-            // Abre el enlace del APK desde GitHub Pages
-            // Android reconocerá el tipo MIME y lo instalará directamente
-            window.location.href = APK_URL;
-
-            setTimeout(() => {
-                document.getElementById('pantallaInstalacion').classList.add('oculto');
-                document.getElementById('pantallaError').classList.add('oculto');
-                document.getElementById('pantallaExito').classList.remove('oculto');
-                document.getElementById('codigoUsado').textContent = codigo;
-            }, 2000);
-
-        } catch (error) {
-            btn.innerHTML = '📥 Instalar app';
+        // Resetear UI a estado inicial
+        function resetearUI() {
+            const btn = document.getElementById('botonInstalar');
+            const input = document.getElementById('codigoInput');
             btn.disabled = false;
-            mostrarMensaje('❌ Error al iniciar la instalación', 'error');
+            btn.innerHTML = '🔓 Instalar';
+            input.disabled = false;
+            input.value = '';
+            input.focus();
+            cambiarUI('inicio');
+            document.getElementById('mensaje').className = 'mensaje';
         }
-    }
 
-    // ============================================
-    // 4. MOSTRAR MENSAJE
-    // ============================================
-    function mostrarMensaje(texto, tipo = 'info') {
-        const el = document.getElementById('mensajeContainer');
-        el.textContent = texto;
-        el.className = 'mensaje ' + tipo;
-        el.style.display = 'block';
-    }
+        // ============================================================
+        //  EVENTO PRINCIPAL: CLICK EN INSTALAR
+        // ============================================================
+        document.getElementById('botonInstalar').addEventListener('click', function() {
+            const input = document.getElementById('codigoInput');
+            const codigo = input.value;
+            const btn = this;
 
-    // ============================================
-    // 5. CERRAR
-    // ============================================
-    function cerrar() {
-        window.close();
-    }
+            if (!codigo.trim()) {
+                mostrarMensaje('⚠️ Ingresa el código de instalación', 'error');
+                input.focus();
+                return;
+            }
 
-    // ============================================
-    // 6. VERIFICAR CÓDIGO DESDE LA URL
-    // ============================================
-    function verificarCodigoURL() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const codigo = urlParams.get('codigo');
-        if (codigo) {
-            document.getElementById('inputCodigo').value = codigo.toUpperCase();
-            setTimeout(instalarApp, 1500);
-        }
-    }
+            // Deshabilitar y mostrar carga
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Validando...';
 
-    // ============================================
-    // 7. INICIALIZAR
-    // ============================================
-    window.onload = function() {
-        console.log('📱 Plataforma de instalación');
-        console.log('📦 APK URL:', APK_URL);
-        verificarCodigoURL();
-    };
+            // Delay para feedback visual
+            setTimeout(() => {
+                const resultado = validarCodigo(codigo);
 
-    window.instalarApp = instalarApp;
-    window.cerrar = cerrar;
-</script>
+                if (!resultado.valido) {
+                    mostrarMensaje(resultado.mensaje, 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = '🔓 Instalar';
+                    cambiarUI('error');
+                    input.focus();
+                    input.select();
+                    return;
+                }
+
+                // ✅ ÉXITO
+                mostrarMensaje('✅ Código verificado. Iniciando descarga...', 'exito');
+                marcarUsado(codigo.toUpperCase().trim());
+                descargarAPK(resultado.apk);
+                cambiarUI('exito');
+
+                btn.innerHTML = '✅ Descargando...';
+                input.disabled = true;
+
+                // Resetear después de 10s
+                setTimeout(() => {
+                    resetearUI();
+                    mostrarMensaje('💡 La descarga debería comenzar automáticamente', 'info');
+                }, 10000);
+
+            }, 800);
+        });
+
+        // ============================================================
+        //  SOPORTE PARA TECLA ENTER
+        // ============================================================
+        document.getElementById('codigoInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('botonInstalar').click();
+            }
+        });
+
+        // ============================================================
+        //  AUTO-FOCUS AL CARGAR
+        // ============================================================
+        window.addEventListener('load', function() {
+            document.getElementById('codigoInput').focus();
+            console.log('🔐 Instalador APK cargado');
+            console.log(`📦 ${CONFIG.CODIGOS_VALIDOS.length} códigos disponibles`);
+            console.log(`🔢 ${obtenerUsados().length} códigos ya usados`);
+        });
+
+        // ============================================================
+        //  (OPCIONAL) GENERADOR DE CÓDIGOS - desde consola
+        //  Escribe en consola: generarCodigos(5)
+        // ============================================================
+        window.generarCodigos = function(cantidad = 5) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const codes = [];
+            for (let i = 0; i < cantidad; i++) {
+                let rand = '';
+                for (let j = 0; j < 13; j++) {
+                    rand += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                codes.push({
+                    code: `${rand.slice(0,5)}-${rand.slice(5,10)}-${rand.slice(10,13)}`,
+                    apk: 'tu-app.apk' // Cambia si tienes varias versiones
+                });
+            }
+            console.log('📋 Códigos generados:');
+            console.log(JSON.stringify(codes, null, 2));
+            console.log('\n📌 Copia en CONFIG.CODIGOS_VALIDOS');
+            return codes;
+        };
+
+        console.log('💡 Para generar códigos: generarCodigos(10)');
+    </script>
 
 </body>
-</html>
+    </html>
